@@ -9,17 +9,12 @@ import { getUser } from '../spotify';
 import UserTopTracks from './UserTopTracks';
 import { Outlet } from 'react-router-dom';
 
-const Dashboard = ({ accessToken, spotifyApi }) => {
+const Dashboard = ({ accessToken, spotifyApi, chooseTrack }) => {
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [playingTrack, setPlayingTrack] = useState();
   const [user, setUser] = useState(null);
   const [lyrics, setLyrics] = useState('');
-
-  const chooseTrack = (track) => {
-    setPlayingTrack(track);
-    setSearch('');
-  };
 
   useEffect(() => {
     if (!accessToken) return;
@@ -81,10 +76,7 @@ const Dashboard = ({ accessToken, spotifyApi }) => {
 
   return (
     <Container className='d-flex flex-column py-2'>
-      <Navbar />
-      <div className='text-white f-lg mb-4'>
-        {user ? user.display_name : ''}
-      </div>
+      <Navbar user={user}/>
       <Form.Control
         type='search'
         placeholder='Search Songs/Artists'
@@ -99,16 +91,13 @@ const Dashboard = ({ accessToken, spotifyApi }) => {
             chooseTrack={chooseTrack}
           />
         ))}
-        {/* {searchResults.length === 0 && (
+        {searchResults.length === 0 && (
           <div className='text-center text-white' style={{ whiteSpace: 'pre' }}>
             {lyrics}
           </div>
-        )} */}
+        )}
       </div>
-        <Outlet />
-      <div className='fixed-bottom'>
-        <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
-      </div>
+      <Outlet />
     </Container>
   );
 };

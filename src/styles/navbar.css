@@ -3,28 +3,26 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 25px;
+  margin-top: 5px;
+  margin-bottom: 15px;
 }
 .nav-links-container {
   width: 50%;
   height: 100%;
   display: flex;
-  align-items: center;
   justify-content: flex-end;
+  align-items: center;
 }
 
 .logo-container {
   height: 100%;
-  width: 70px;
-  padding: 25px;
-  text-decoration: none;
-}
-.nav-link {
-  padding: 10px 15px;
-  cursor: pointer;
-  color: #fff;
-}
-.nav-link:hover {
-  color:rgb(89, 255, 47);
+  display: flex;
+  align-items: center;
 }
 
+a {
+  text-decoration: none;
+}
+a:active {
+  text-decoration: none;
+}

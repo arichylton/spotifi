@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import SpotifyWebApi from 'spotify-web-api-node';
 
+import Player from './Player';
 import Dashboard from './Dashboard';
 import UserTopArtists from './UserTopArtists';
 import UserTopTracks from './UserTopTracks';
@@ -20,29 +21,41 @@ const Profile = ({ code }) => {
 
   const accessToken = useAuth(code);
   return (
-    <Routes>
-      <Route
-        path='/'
-        element={
-          <Dashboard
-            accessToken={accessToken}
-            spotifyApi={spotifyApi}
-            chooseTrack={chooseTrack}
-          />
-        }
-      >
-        <Route path='artists' element={<UserTopArtists />} />
+    <div>
+      <Routes>
         <Route
-          path='tracks'
+          path='/'
           element={
-            <UserTopTracks
-              chooseTrack={chooseTrack}
+            <Dashboard
               accessToken={accessToken}
+              spotifyApi={spotifyApi}
+              chooseTrack={chooseTrack}
             />
           }
-        />
-      </Route>
-    </Routes>
+        >
+          <Route
+            path='artists'
+            element={
+              <UserTopArtists
+                accessToken={accessToken}
+              />
+            }
+          />
+          <Route
+            path='tracks'
+            element={
+              <UserTopTracks
+                chooseTrack={chooseTrack}
+                accessToken={accessToken}
+              />
+            }
+          />
+        </Route>
+      </Routes>
+      <div className='fixed-bottom'>
+        <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
+      </div>
+    </div>
   );
 };
 

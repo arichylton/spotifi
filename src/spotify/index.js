@@ -18,3 +18,14 @@ export const getTopTracksMedium = (token) =>
       },
     }
   );
+
+export const getTopArtistsMedium = (token) =>
+  axios.get(
+    'https://api.spotify.com/v1/me/top/artists?limit=50&time_range=medium_term',
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );

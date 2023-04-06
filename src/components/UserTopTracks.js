@@ -4,6 +4,7 @@ import { catchErrors } from '../utils/index';
 
 const UserTopTracks = ({ accessToken, chooseTrack }) => {
   const [topTracks, setTopTracks] = useState(null);
+  const [tracksLength, setTracksLength] = useState('AllTime');
 
     const handlePlay = (track) => {
       chooseTrack(track);
@@ -22,9 +23,48 @@ const UserTopTracks = ({ accessToken, chooseTrack }) => {
 
 
   return (
-    <div >
+    <div className='container'>
       <hr />
-      <h1 className='text-white mb-4'>Top Tracks (3 months)</h1>
+      <div className='text-white d-flex justify-content-between mb-4 mt-3'>
+        <h1 className='mb-4 fw-bold'>Top Songs</h1>
+        <ul
+          className='d-flex text-decoration-none justify-content-around list-group-horizontal align-items-center fs-6'
+          style={{ width: '30%' }}
+        >
+          <li className='list-item'>
+            <button
+              className={
+                tracksLength === 'AllTime' ? 'btn btn-primary' : 'btn btn-dark'
+              }
+              onClick={() => setTracksLength('AllTime')}
+            >
+              All Time
+            </button>
+          </li>
+          <li className='list-item'>
+            <button
+              className={
+                tracksLength === 'Last6' ? 'btn btn-primary' : 'btn btn-dark'
+              }
+              onClick={() => setTracksLength('Last6')}
+            >
+              Last 6 months
+            </button>
+          </li>
+          <li className='list-item'>
+            <button
+              className={
+                tracksLength === 'LastMonth'
+                  ? 'btn btn-primary'
+                  : 'btn btn-dark'
+              }
+              onClick={() => setTracksLength('LastMonth')}
+            >
+              Last month
+            </button>
+          </li>
+        </ul>
+      </div>
 
       {topTracks ? (
         topTracks.items.map((track, i) => {
