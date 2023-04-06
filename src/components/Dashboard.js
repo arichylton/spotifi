@@ -1,23 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Container, Form } from 'react-bootstrap';
 import axios from 'axios';
-import useAuth from './useAuth';
-import SpotifyWebApi from 'spotify-web-api-node';
+import Navbar from './Navbar';
 import TrackSearchResult from './TrackSearchResult';
-import { catchErrors } from './utils';
+import { catchErrors } from '../utils';
 import Player from './Player';
-import { getUser } from './spotify';
-import UserTopTracks from './components/UserTopTracks';
-import Navbar from './components/Navbar';
+import { getUser } from '../spotify';
+import UserTopTracks from './UserTopTracks';
+import { Outlet } from 'react-router-dom';
 
-const CLIENT_ID = '90a462053588436b95c0d6ad460a9878';
-
-const spotifyApi = new SpotifyWebApi({
-  clientId: CLIENT_ID,
-});
-
-const Dashboard = ({ code }) => {
-  const accessToken = useAuth(code);
+const Dashboard = ({ accessToken, spotifyApi }) => {
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [playingTrack, setPlayingTrack] = useState();
@@ -100,27 +92,20 @@ const Dashboard = ({ code }) => {
         onChange={(e) => setSearch(e.target.value)}
       />
       <div className='flex-grow-1 my-2' style={{ overflowY: 'auto' }}>
-        {searchResults.map(
-          (track) => (
-            console.log(track),
-            (
-              <TrackSearchResult
-                key={track.uri}
-                track={track}
-                chooseTrack={chooseTrack}
-              />
-            )
-          )
-        )}
-        {searchResults.length === 0 && (
+        {searchResults.map((track) => (
+          <TrackSearchResult
+            key={track.uri}
+            track={track}
+            chooseTrack={chooseTrack}
+          />
+        ))}
+        {/* {searchResults.length === 0 && (
           <div className='text-center text-white' style={{ whiteSpace: 'pre' }}>
             {lyrics}
           </div>
-        )}
+        )} */}
       </div>
-      <div>
-        <UserTopTracks accessToken={accessToken} chooseTrack={chooseTrack} />
-      </div>
+        <Outlet />
       <div className='fixed-bottom'>
         <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
       </div>

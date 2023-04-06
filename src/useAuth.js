@@ -15,7 +15,7 @@ const useAuth = (code) => {
         setExpiresIn(res.data.expiresIn);
         window.history.pushState({}, null, '/');
       })
-      .catch(() => {
+      .catch((error) => {
         window.location = '/';
       });
   }, [code]);

@@ -1,5 +1,4 @@
 import axios from 'axios';
-// API CALLS ***************************************************************************************
 
 export const getUser = (token) =>
   axios.get('https://api.spotify.com/v1/me', {
