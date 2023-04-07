@@ -13,37 +13,9 @@ const Dashboard = ({ accessToken, spotifyApi, chooseTrack }) => {
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [playingTrack, setPlayingTrack] = useState();
-  const [user, setUser] = useState(null);
+
   const [lyrics, setLyrics] = useState('');
 
-  useEffect(() => {
-    if (!accessToken) return;
-    const fetchData = async () => {
-      await getUser(accessToken).then((user) => {
-        setUser(user.data);
-      });
-    };
-    catchErrors(fetchData());
-  }, [accessToken]);
-
-  // useEffect(() => {
-  //   if (!playingTrack) return;
-  //   axios
-  //     .get('http://localhost:3001/lyrics', {
-  //       params: {
-  //         track: playingTrack.title,
-  //         artist: playingTrack.artist,
-  //       },
-  //     })
-  //     .then((res) => {
-  //       setLyrics(res.data.lyrics);
-  //     });
-  // }, [playingTrack]);
-
-  useEffect(() => {
-    if (!accessToken) return;
-    spotifyApi.setAccessToken(accessToken);
-  }, [accessToken]);
 
   useEffect(() => {
     if (!search) return setSearchResults([]);
@@ -76,7 +48,6 @@ const Dashboard = ({ accessToken, spotifyApi, chooseTrack }) => {
 
   return (
     <Container className='d-flex flex-column py-2'>
-      <Navbar user={user}/>
       <Form.Control
         type='search'
         placeholder='Search Songs/Artists'

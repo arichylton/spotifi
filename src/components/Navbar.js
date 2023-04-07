@@ -1,27 +1,20 @@
 import { Outlet, Link } from 'react-router-dom';
 import { Fragment } from 'react';
-import '../styles/navbar.css'
+import spotifyLogo from '../assets/Spotify_Logo_RGB_Green.png'
+import '../styles/navbar.css';
 
-const Navbar = ({user}) => {
+const Navbar = () => {
   return (
     <Fragment>
-      <div className='navigation mb-4'>
+      <div className='navigation container mb-5 pt-5'>
         <Link to='/'>
-          {user ? (
-            <div className='logo-container'>
-              <img
-                src={user.images[0].url}
-                alt='userIMG'
-                className='rounded-circle me-4'
-                style={{ width: 50 }}
-              />
-              <div className='text-white text-center fs-4 text-decoration-none '>
-                {user.display_name}
-              </div>
-            </div>
-          ) : (
-            ''
-          )}
+          <div className='logo-container'>
+            <img
+              src={spotifyLogo}
+              alt='userIMG'
+              style={{ width: 140 }}
+            />
+          </div>
         </Link>
         <div className='nav-links-container'>
           <Link className='text-white ps-4 fs-5' to='/tracks'>

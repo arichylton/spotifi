@@ -11,6 +11,15 @@ const Player = ({ accessToken, trackUri }) => {
   if (!accessToken) return null;
   return (
     <SpotifyPlayer
+      styles={{
+        bgColor: '#191414',
+        color: '#fff',
+        sliderTrackColor: '#888',
+        trackArtistColor: '#999',
+        trackNameColor: '#fff',
+        sliderColor: '#1DB954',
+        sliderHandleColor: '#fff',
+      }}
       token={accessToken}
       showSaveIcon
       callback={(state) => {

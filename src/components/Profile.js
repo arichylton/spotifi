@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import SpotifyWebApi from 'spotify-web-api-node';
 
+import { getUser } from '../spotify';
+import { catchErrors } from '../utils';
+import Navbar from './Navbar';
+import User from './User';
 import Player from './Player';
 import Dashboard from './Dashboard';
 import UserTopArtists from './UserTopArtists';
@@ -16,17 +20,45 @@ const spotifyApi = new SpotifyWebApi({
 
 const Profile = ({ code }) => {
   const [playingTrack, setPlayingTrack] = useState('');
-  const [artistID, setArtistID] = useState('');
+  const [user, setUser] = useState(null);
+  const accessToken = useAuth(code);
   const chooseTrack = (track) => {
     setPlayingTrack(track);
   };
-  const chooseArtist = (id) => {
-    setArtistID(id);
-  }
+  useEffect(() => {
+    if (!accessToken) return;
+    const fetchData = async () => {
+      await getUser(accessToken).then((user) => {
+        setUser(user.data);
+      });
+    };
+    catchErrors(fetchData());
+  }, [accessToken]);
 
-  const accessToken = useAuth(code);
+  // useEffect(() => {
+  //   if (!playingTrack) return;
+  //   axios
+  //     .get('http://localhost:3001/lyrics', {
+  //       params: {
+  //         track: playingTrack.title,
+  //         artist: playingTrack.artist,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       setLyrics(res.data.lyrics);
+  //     });
+  // }, [playingTrack]);
+
+  useEffect(() => {
+    if (!accessToken) return;
+    spotifyApi.setAccessToken(accessToken);
+  }, [accessToken]);
+
   return (
     <div>
+      <div>
+        <Navbar user={user} />
+      </div>
       <Routes>
         <Route
           path='/'
@@ -38,14 +70,10 @@ const Profile = ({ code }) => {
             />
           }
         >
+          <Route path='/' element={<User user={user}/>} />
           <Route
             path='artists'
-            element={
-              <UserTopArtists
-                accessToken={accessToken}
-                chooseArtist={chooseArtist}
-              />
-            }
+            element={<UserTopArtists accessToken={accessToken} />}
           />
           <Route
             path='tracks'
@@ -58,11 +86,11 @@ const Profile = ({ code }) => {
           />
           <Route
             path={`artist/:id`}
-            element={<Artist accessToken={accessToken}/>}
+            element={<Artist accessToken={accessToken} />}
           />
         </Route>
       </Routes>
-      <div className='fixed-bottom'>
+      <div className='fixed-bottom player'>
         <Player accessToken={accessToken} trackUri={playingTrack?.uri} />
       </div>
     </div>
