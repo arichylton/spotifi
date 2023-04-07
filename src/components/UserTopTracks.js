@@ -1,26 +1,39 @@
 import { useState, useEffect } from 'react';
-import { getTopTracksMedium } from '../spotify/index';
+import {
+  getTopTracksShort,
+  getTopTracksMedium,
+  getTopTracksLong,
+} from '../spotify/index';
 import { catchErrors } from '../utils/index';
 
 const UserTopTracks = ({ accessToken, chooseTrack }) => {
   const [topTracks, setTopTracks] = useState(null);
-  const [tracksLength, setTracksLength] = useState('AllTime');
+  const [tracksLength, setTracksLength] = useState('long');
 
-    const handlePlay = (track) => {
-      chooseTrack(track);
-    };
-
+  const handlePlay = (track) => {
+    chooseTrack(track);
+  };
 
   useEffect(() => {
     if (!accessToken) return;
     const fetchData = async () => {
-      await getTopTracksMedium(accessToken).then((tracks) => {
-        setTopTracks(tracks.data);   
-      });
+      console.log(tracksLength);
+      if (tracksLength === 'long') {
+        await getTopTracksLong(accessToken).then((tracks) => {
+          setTopTracks(tracks.data);
+        });
+      } else if (tracksLength === 'medium') {
+        await getTopTracksMedium(accessToken).then((tracks) => {
+          setTopTracks(tracks.data);
+        });
+      } else {
+        await getTopTracksShort(accessToken).then((tracks) => {
+          setTopTracks(tracks.data);
+        });
+      }
     };
     catchErrors(fetchData());
-  }, [accessToken]);
-
+  }, [accessToken, tracksLength]);
 
   return (
     <div className='container'>
@@ -34,9 +47,9 @@ const UserTopTracks = ({ accessToken, chooseTrack }) => {
           <li className='list-item'>
             <button
               className={
-                tracksLength === 'AllTime' ? 'btn btn-primary' : 'btn btn-dark'
+                tracksLength === 'long' ? 'btn btn-primary' : 'btn btn-dark'
               }
-              onClick={() => setTracksLength('AllTime')}
+              onClick={() => setTracksLength('long')}
             >
               All Time
             </button>
@@ -44,9 +57,9 @@ const UserTopTracks = ({ accessToken, chooseTrack }) => {
           <li className='list-item'>
             <button
               className={
-                tracksLength === 'Last6' ? 'btn btn-primary' : 'btn btn-dark'
+                tracksLength === 'medium' ? 'btn btn-primary' : 'btn btn-dark'
               }
-              onClick={() => setTracksLength('Last6')}
+              onClick={() => setTracksLength('medium')}
             >
               Last 6 months
             </button>
@@ -54,11 +67,11 @@ const UserTopTracks = ({ accessToken, chooseTrack }) => {
           <li className='list-item'>
             <button
               className={
-                tracksLength === 'LastMonth'
+                tracksLength === 'short'
                   ? 'btn btn-primary'
                   : 'btn btn-dark'
               }
-              onClick={() => setTracksLength('LastMonth')}
+              onClick={() => setTracksLength('short')}
             >
               Last month
             </button>

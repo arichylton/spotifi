@@ -1,20 +1,35 @@
 import { useState, useEffect } from 'react';
-import { getTopArtistsMedium } from '../spotify/index';
+import { Link } from 'react-router-dom';
+import {
+  getTopArtistsShort,
+  getTopArtistsMedium,
+  getTopArtistsLong,
+} from '../spotify';
 import { catchErrors } from '../utils/index';
 
-const UserTopArtists = ({ accessToken }) => {
+const UserTopArtists = ({ accessToken, chooseArtist }) => {
   const [TopArtists, setTopArtists] = useState(null);
-  const [ArtistLength, setArtistLength] = useState('AllTime');
+  const [ArtistLength, setArtistLength] = useState('long');
 
   useEffect(() => {
     if (!accessToken) return;
     const fetchData = async () => {
-      await getTopArtistsMedium(accessToken).then((artists) => {
-        setTopArtists(artists.data);
-      });
+      if (ArtistLength === 'long') {
+        await getTopArtistsLong(accessToken).then((artists) => {
+          setTopArtists(artists.data);
+        });
+      } else if (ArtistLength === 'medium') {
+        await getTopArtistsMedium(accessToken).then((artists) => {
+          setTopArtists(artists.data);
+        });
+      } else {
+        await getTopArtistsShort(accessToken).then((artists) => {
+          setTopArtists(artists.data);
+        });
+      }
     };
     catchErrors(fetchData());
-  }, [accessToken]);
+  }, [accessToken, ArtistLength]);
   return (
     <div className='container'>
       <hr />
@@ -27,9 +42,9 @@ const UserTopArtists = ({ accessToken }) => {
           <li className='list-item'>
             <button
               className={
-                ArtistLength === 'AllTime' ? 'btn btn-primary' : 'btn btn-dark'
+                ArtistLength === 'long' ? 'btn btn-primary' : 'btn btn-dark'
               }
-              onClick={() => setArtistLength('AllTime')}
+              onClick={() => setArtistLength('long')}
             >
               All Time
             </button>
@@ -37,9 +52,9 @@ const UserTopArtists = ({ accessToken }) => {
           <li className='list-item'>
             <button
               className={
-                ArtistLength === 'Last6' ? 'btn btn-primary' : 'btn btn-dark'
+                ArtistLength === 'medium' ? 'btn btn-primary' : 'btn btn-dark'
               }
-              onClick={() => setArtistLength('Last6')}
+              onClick={() => setArtistLength('medium')}
             >
               Last 6 months
             </button>
@@ -47,11 +62,9 @@ const UserTopArtists = ({ accessToken }) => {
           <li className='list-item'>
             <button
               className={
-                ArtistLength === 'LastMonth'
-                  ? 'btn btn-primary'
-                  : 'btn btn-dark'
+                ArtistLength === 'short' ? 'btn btn-primary' : 'btn btn-dark'
               }
-              onClick={() => setArtistLength('LastMonth')}
+              onClick={() => setArtistLength('short')}
             >
               Last month
             </button>
@@ -68,12 +81,15 @@ const UserTopArtists = ({ accessToken }) => {
                 style={{ cursor: 'pointer' }}
                 key={artist.uri}
               >
-                <img
-                  src={artist.images[0].url}
-                  style={{ height: '200px', width: '200px' }}
-                  className='rounded-circle'
-                  alt='top-track-img'
-                />
+                <Link to={`/artist/${artist.id}`}>
+                  <img
+                    src={artist.images[0].url}
+                    style={{ height: '200px', width: '200px', objectFit: 'cover'  }}
+                    className='rounded-circle'
+                    alt='top-track-img'
+                  />
+                </Link>
+
                 <div className='m-3'>
                   <div className='text-white'>{artist.name}</div>
                 </div>

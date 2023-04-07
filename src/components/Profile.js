@@ -7,6 +7,7 @@ import Dashboard from './Dashboard';
 import UserTopArtists from './UserTopArtists';
 import UserTopTracks from './UserTopTracks';
 import useAuth from '../useAuth';
+import Artist from './Artist';
 
 const CLIENT_ID = '90a462053588436b95c0d6ad460a9878';
 const spotifyApi = new SpotifyWebApi({
@@ -15,9 +16,13 @@ const spotifyApi = new SpotifyWebApi({
 
 const Profile = ({ code }) => {
   const [playingTrack, setPlayingTrack] = useState('');
+  const [artistID, setArtistID] = useState('');
   const chooseTrack = (track) => {
     setPlayingTrack(track);
   };
+  const chooseArtist = (id) => {
+    setArtistID(id);
+  }
 
   const accessToken = useAuth(code);
   return (
@@ -38,6 +43,7 @@ const Profile = ({ code }) => {
             element={
               <UserTopArtists
                 accessToken={accessToken}
+                chooseArtist={chooseArtist}
               />
             }
           />
@@ -49,6 +55,10 @@ const Profile = ({ code }) => {
                 accessToken={accessToken}
               />
             }
+          />
+          <Route
+            path={`artist/:id`}
+            element={<Artist accessToken={accessToken}/>}
           />
         </Route>
       </Routes>
