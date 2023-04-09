@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getArtist } from '../spotify';
 import { useParams } from 'react-router-dom';
 import { catchErrors } from '../utils/index';
+import { TailSpin } from 'react-loader-spinner';
 import '../styles/artist.css';
 
 const Artist = ({ accessToken }) => {
@@ -20,8 +21,8 @@ const Artist = ({ accessToken }) => {
   return (
     <div className='text-white artist__page'>
       {artist ? (
-        <div className='d-flex flex-column align-items-center justify-content-center mt-3'>
-          <div className='d-flex flex-column align-items-center '>
+        <div className='d-flex flex-column align-items-center justify-content-center mt-3 w-100'>
+          <div className='d-flex flex-column align-items-center'>
             <img
               src={artist.images[0].url}
               alt='Artist'
@@ -32,31 +33,40 @@ const Artist = ({ accessToken }) => {
               {artist.name}
             </span>
           </div>
-          <div className='d-flex mt-4 fs-2 font-monospace gap-5 me-5'>
-            <div className='flex-column d-flex align-items-center text-danger fw-bold'>
-              {artist.followers.total}
+          <div className='d-flex align-items-center justify-content-between mt-4 fs-3 font-monospace gap-5 w-50'>
+            <div className='flex-column d-flex align-items-center text-danger fs-4 fw-bold w-100'>
+              {artist.followers.total.toLocaleString('en-US')}
               <span className='fs-6 text-secondary'>Followers</span>
             </div>
-            <div className='d-flex align-items-center flex-column'>
-              <ul className='d-flex flex-column align-items-center mb-1 p-0'>
+            <div className='d-flex align-items-center flex-column w-100'>
+              <ul className='d-flex flex-column align-items-center mb-1 p-0 text-center'>
                 {artist.genres.map((genre, i) => {
                   return (
-                    <li key={i} className='text-danger fw-bold'>
-                     {genre}
+                    <li key={i} className='text-danger fw-bold fs-4'>
+                      {genre}
                     </li>
                   );
                 })}
               </ul>
               <span className='fs-6 text-secondary fw-bold'>Genres</span>
             </div>
-            <div className='flex-column d-flex align-items-center text-danger fw-bold'>
+            <div className='flex-column d-flex align-items-center text-danger  fs-4 fw-bold w-100'>
               {artist.popularity}
               <span className='fs-6 text-secondary'>Popularity</span>
             </div>
           </div>
         </div>
       ) : (
-        'HELLO'
+        <TailSpin
+          height='80'
+          width='80'
+          color='#1DB954'
+          ariaLabel='tail-spin-loading'
+          radius='1'
+          wrapperStyle={{}}
+          wrapperClass=''
+          visible={true}
+        />
       )}
     </div>
   );

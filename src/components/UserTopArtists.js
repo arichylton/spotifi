@@ -1,35 +1,39 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  getTopArtistsShort,
-  getTopArtistsMedium,
-  getTopArtistsLong,
+  getAllArtistData,
 } from '../spotify';
 import { catchErrors } from '../utils/index';
+import { TailSpin } from 'react-loader-spinner';
 
 const UserTopArtists = ({ accessToken, chooseArtist }) => {
   const [TopArtists, setTopArtists] = useState(null);
   const [ArtistLength, setArtistLength] = useState('long');
+    const [long, setLong] = useState(null);
+    const [medium, setMedium] = useState(null);
+    const [short, setShort] = useState(null);
 
   useEffect(() => {
     if (!accessToken) return;
     const fetchData = async () => {
-      if (ArtistLength === 'long') {
-        await getTopArtistsLong(accessToken).then((artists) => {
-          setTopArtists(artists.data);
-        });
-      } else if (ArtistLength === 'medium') {
-        await getTopArtistsMedium(accessToken).then((artists) => {
-          setTopArtists(artists.data);
-        });
-      } else {
-        await getTopArtistsShort(accessToken).then((artists) => {
-          setTopArtists(artists.data);
-        });
-      }
+      const { long, medium, short } = await getAllArtistData(accessToken);
+      setLong(long);
+      setMedium(medium);
+      setShort(short);
     };
     catchErrors(fetchData());
-  }, [accessToken, ArtistLength]);
+  }, [accessToken]);
+
+  useEffect(() => {
+    if (ArtistLength === 'long') {
+      setTopArtists(long);
+    } else if (ArtistLength === 'medium') {
+      setTopArtists(medium);
+    } else {
+      setTopArtists(short);
+    }
+  }, [long, ArtistLength]);
+
   return (
     <div className='container'>
       <hr />
@@ -77,27 +81,45 @@ const UserTopArtists = ({ accessToken, chooseArtist }) => {
           TopArtists.items.map((artist, i) => {
             return (
               <div
-                className='d-flex m-4 align-items-center flex-column col'
+                className='d-flex m-3 align-items-center flex-column col artist-item'
                 style={{ cursor: 'pointer' }}
                 key={artist.uri}
               >
                 <Link to={`/artist/${artist.id}`}>
                   <img
                     src={artist.images[0].url}
-                    style={{ height: '200px', width: '200px', objectFit: 'cover'  }}
+                    style={{
+                      height: '220px',
+                      width: '220px',
+                      objectFit: 'cover',
+                    }}
                     className='rounded-circle'
                     alt='top-track-img'
                   />
                 </Link>
 
-                <div className='m-3'>
-                  <div className='text-white'>{artist.name}</div>
+                <div className='m-3 mb-4'>
+                  <div className='text-white fs-5'>{artist.name}</div>
                 </div>
               </div>
             );
           })
         ) : (
-          <div>Loading...</div>
+          <div
+            className='container d-flex justify-content-center align-items-center'
+            style={{ height: '50vh' }}
+          >
+            <TailSpin
+              height='60'
+              width='60'
+              color='#1DB954'
+              ariaLabel='tail-spin-loading'
+              radius='1'
+              wrapperStyle={{}}
+              wrapperClass=''
+              visible={true}
+            />
+          </div>
         )}
       </div>
     </div>

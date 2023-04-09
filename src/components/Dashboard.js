@@ -1,12 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Container, Form } from 'react-bootstrap';
 import axios from 'axios';
-import Navbar from './Navbar';
+import { Container, Form } from 'react-bootstrap';
 import TrackSearchResult from './TrackSearchResult';
-import { catchErrors } from '../utils';
-import Player from './Player';
-import { getUser } from '../spotify';
-import UserTopTracks from './UserTopTracks';
+
 import { Outlet } from 'react-router-dom';
 
 const Dashboard = ({ accessToken, spotifyApi, chooseTrack }) => {
@@ -15,6 +11,10 @@ const Dashboard = ({ accessToken, spotifyApi, chooseTrack }) => {
   const [playingTrack, setPlayingTrack] = useState();
 
   const [lyrics, setLyrics] = useState('');
+  const clear = () => {
+    setSearch('');
+  };
+
 
 
   useEffect(() => {
@@ -31,13 +31,16 @@ const Dashboard = ({ accessToken, spotifyApi, chooseTrack }) => {
               return smallest;
             },
             track.album.images[0]
+            
           );
-
+          setPlayingTrack(track);
           return {
             artist: track.artists[0].name,
             title: track.name,
             uri: track.uri,
             albumUrl: smallestAlbumImage.url,
+            duration: track.duration_ms,
+            albumName: track.album.name
           };
         })
       );
@@ -54,22 +57,23 @@ const Dashboard = ({ accessToken, spotifyApi, chooseTrack }) => {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
-      <div className='flex-grow-1 my-2' style={{ overflowY: 'auto' }}>
+      <div
+        className='flex-grow-1 my-2 overflow-hidden'
+        style={{ overflowY: 'auto' }}
+      >
+
         {searchResults.map((track) => (
           <TrackSearchResult
             key={track.uri}
             track={track}
             chooseTrack={chooseTrack}
+            clear={clear}
           />
         ))}
-        {searchResults.length === 0 && (
-          <div className='text-center text-white' style={{ whiteSpace: 'pre' }}>
-            {lyrics}
-          </div>
-        )}
       </div>
       <Outlet />
     </Container>
   );
 };
+
 export default Dashboard;

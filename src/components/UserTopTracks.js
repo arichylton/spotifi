@@ -1,14 +1,18 @@
 import { useState, useEffect } from 'react';
 import {
-  getTopTracksShort,
-  getTopTracksMedium,
-  getTopTracksLong,
+  getAllTrackData
 } from '../spotify/index';
+import '../styles/tracks.css';
 import { catchErrors } from '../utils/index';
+import { TailSpin } from 'react-loader-spinner';
+import TrackItem from './TrackItem';
 
 const UserTopTracks = ({ accessToken, chooseTrack }) => {
   const [topTracks, setTopTracks] = useState(null);
   const [tracksLength, setTracksLength] = useState('long');
+  const [long, setLong] = useState(null);
+  const [medium, setMedium] = useState(null);
+  const [short, setShort] = useState(null);
 
   const handlePlay = (track) => {
     chooseTrack(track);
@@ -17,26 +21,26 @@ const UserTopTracks = ({ accessToken, chooseTrack }) => {
   useEffect(() => {
     if (!accessToken) return;
     const fetchData = async () => {
-      console.log(tracksLength);
-      if (tracksLength === 'long') {
-        await getTopTracksLong(accessToken).then((tracks) => {
-          setTopTracks(tracks.data);
-        });
-      } else if (tracksLength === 'medium') {
-        await getTopTracksMedium(accessToken).then((tracks) => {
-          setTopTracks(tracks.data);
-        });
-      } else {
-        await getTopTracksShort(accessToken).then((tracks) => {
-          setTopTracks(tracks.data);
-        });
-      }
+      const { long, medium, short } = await getAllTrackData(accessToken);
+      setLong(long);
+      setMedium(medium);
+      setShort(short);
     };
     catchErrors(fetchData());
-  }, [accessToken, tracksLength]);
+  }, [accessToken]);
+
+  useEffect(() => {
+    if (tracksLength === 'long') {
+      setTopTracks(long);
+    } else if (tracksLength === 'medium') {
+      setTopTracks(medium);
+    } else {
+      setTopTracks(short);
+    }
+  }, [long, tracksLength]);
 
   return (
-    <div className='container'>
+    <div className='container' style={{marginBottom: '5rem'}}>
       <hr />
       <div className='text-white d-flex justify-content-between mb-4 mt-3'>
         <h1 className='mb-4 fw-bold'>Top Songs</h1>
@@ -67,9 +71,7 @@ const UserTopTracks = ({ accessToken, chooseTrack }) => {
           <li className='list-item'>
             <button
               className={
-                tracksLength === 'short'
-                  ? 'btn btn-primary'
-                  : 'btn btn-dark'
+                tracksLength === 'short' ? 'btn btn-primary' : 'btn btn-dark'
               }
               onClick={() => setTracksLength('short')}
             >
@@ -82,26 +84,31 @@ const UserTopTracks = ({ accessToken, chooseTrack }) => {
       {topTracks ? (
         topTracks.items.map((track, i) => {
           return (
-            <div
-              className='d-flex m-2 align-items-center'
-              style={{ cursor: 'pointer' }}
-              key={track.uri}
-              onClick={() => handlePlay(track)}
-            >
-              <img
-                src={track.album.images[0].url}
-                style={{ height: '64px', width: '64px' }}
-                alt='top-track-img'
-              />
-              <div className='m-3'>
-                <div className='text-white'>{track.name}</div>
-                <div className='text-muted'>{track.artists[0].name}</div>
-              </div>
-            </div>
+            <TrackItem
+              track={track}
+              handlePlay={handlePlay}
+              key={i}
+              size={'64'}
+              width={'50rem'}
+            />
           );
         })
       ) : (
-        <div>Loading...</div>
+        <div
+          className='container d-flex justify-content-center align-items-center'
+          style={{ height: '50vh' }}
+        >
+          <TailSpin
+            height='60'
+            width='60'
+            color='#1DB954'
+            ariaLabel='tail-spin-loading'
+            radius='1'
+            wrapperStyle={{}}
+            wrapperClass=''
+            visible={true}
+          />
+        </div>
       )}
     </div>
   );

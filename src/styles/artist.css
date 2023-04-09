@@ -1,5 +1,14 @@
 .artist__page {
-  height: 80vh;
+  height: 60vh;
   display: flex;
   justify-content: center;
 }
+
+.artist-item {
+  transition: 0.2s;
+}
+
+.artist-item:hover {
+  scale: 1.1;
+}
+

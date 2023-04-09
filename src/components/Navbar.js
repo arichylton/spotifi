@@ -9,11 +9,7 @@ const Navbar = () => {
       <div className='navigation container mb-5 pt-5'>
         <Link to='/'>
           <div className='logo-container'>
-            <img
-              src={spotifyLogo}
-              alt='userIMG'
-              style={{ width: 140 }}
-            />
+            <img src={spotifyLogo} alt='userIMG' style={{ width: 140 }} />
           </div>
         </Link>
         <div className='nav-links-container'>
@@ -22,6 +18,9 @@ const Navbar = () => {
           </Link>
           <Link className='text-white ps-4 fs-5' to='/artists'>
             Artists
+          </Link>
+          <Link className='text-white ps-4 fs-5' to='/playlists'>
+            Playlists
           </Link>
         </div>
       </div>
