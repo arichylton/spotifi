@@ -4,19 +4,16 @@ import { catchErrors } from '../utils';
 import { TailSpin } from 'react-loader-spinner';
 import { Carousel } from 'react-responsive-carousel';
 import TrackItem from './TrackItem';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import '../styles/user.css'
+import '../styles/user.css';
 
 const User = ({ accessToken, chooseTrack }) => {
   const [user, setUser] = useState(null);
   const [followedArtists, setFollowedArtists] = useState(null);
   const [playlists, setPlaylists] = useState(null);
-  const [filteredPlaylist, setFilteredPlaylist] = useState(null);
   const [recentlyPlayed, setRecentlyPlayed] = useState(null);
   const [savedTracks, setSavedTracks] = useState(null);
-  const navigate = useNavigate();
-  const handleOnClick = (playlist) => console.log(playlists.items[playlist].id);
 
   const handlePlay = (track) => {
     chooseTrack(track);
@@ -55,21 +52,19 @@ const User = ({ accessToken, chooseTrack }) => {
                   objectFit: 'cover',
                 }}
               />
-              <div className='d-flex flex-column gap-1'>
-                <h1 className='fs-1 mb-4 fw-bold text-center'>
-                  {user.display_name}
-                </h1>
-                <span className='text-muted fs-5 gap-3 d-flex justify-content-between align-items-center'>
+              <div className='d-flex flex-column gap-1 fw-bold'>
+                <h1 className='fs-1 mb-2 text-center '>{user.display_name}</h1>
+                <span className='text-muted fs-5 d-flex justify-content-between align-items-center user__stats'>
                   Playlists:{' '}
                   <span style={{ color: '#1DB954' }}>{playlists.total}</span>
                 </span>
-                <span className='text-muted fs-5 d-flex justify-content-between align-items-center'>
+                <span className='text-muted fs-5 d-flex justify-content-between align-items-center user__stats'>
                   Followed:{' '}
                   <span style={{ color: '#1DB954' }}>
                     {followedArtists.artists.items.length}
                   </span>
                 </span>
-                <span className='text-muted fs-5 d-flex justify-content-between align-items-center'>
+                <span className='text-muted fs-5 d-flex justify-content-between align-items-center user__stats'>
                   Followers:{' '}
                   <span style={{ color: '#1DB954' }}>
                     {user.followers.total}
@@ -88,7 +83,6 @@ const User = ({ accessToken, chooseTrack }) => {
                   showStatus={false}
                   infiniteLoop={true}
                   showThumbs={false}
-                  onClickItem={(playlist, h) => handleOnClick(playlist, h)}
                 >
                   {playlists.items
                     .filter((playlist) => {
@@ -98,7 +92,11 @@ const User = ({ accessToken, chooseTrack }) => {
                     })
                     .map((playlist, i) => {
                       return (
-                        <div key={i} style={{ cursor: 'pointer' }}>
+                        <Link
+                          to={`/playlist/${playlist.id}`}
+                          key={i}
+                          style={{ cursor: 'pointer' }}
+                        >
                           <img
                             className='rounded'
                             src={
@@ -113,7 +111,7 @@ const User = ({ accessToken, chooseTrack }) => {
                               ? playlist.name
                               : 'Untitled'}
                           </p>
-                        </div>
+                        </Link>
                       );
                     })}
                 </Carousel>

@@ -25,15 +25,6 @@ const Profile = ({ code }) => {
   const chooseTrack = (track) => {
     setPlayingTrack(track);
   };
-  // useEffect(() => {
-  //   if (!accessToken) return;
-  //   const fetchData = async () => {
-  //     await getUser(accessToken).then((user) => {
-  //       setUser(user.data);
-  //     });
-  //   };
-  //   catchErrors(fetchData());
-  // }, [accessToken]);
 
   // useEffect(() => {
   //   if (!playingTrack) return;
@@ -99,7 +90,9 @@ const Profile = ({ code }) => {
           />
           <Route
             path={`playlist/:id`}
-            element={<Playlist accessToken={accessToken} />}
+            element={
+              <Playlist accessToken={accessToken} chooseTrack={chooseTrack} />
+            }
           />
         </Route>
       </Routes>

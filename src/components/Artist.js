@@ -29,11 +29,11 @@ const Artist = ({ accessToken }) => {
               className='rounded-circle'
               style={{ width: 300, height: 300, objectFit: 'cover' }}
             />
-            <span className='font-monospace mt-4' style={{ fontSize: 80 }}>
+            <span className='mt-4' style={{ fontSize: 80 }}>
               {artist.name}
             </span>
           </div>
-          <div className='d-flex align-items-center justify-content-between mt-4 fs-3 font-monospace gap-5 w-50'>
+          <div className='d-flex align-items-center justify-content-between mt-4 fs-3 gap-5 w-50'>
             <div className='flex-column d-flex align-items-center text-danger fs-4 fw-bold w-100'>
               {artist.followers.total.toLocaleString('en-US')}
               <span className='fs-6 text-secondary'>Followers</span>
@@ -57,16 +57,21 @@ const Artist = ({ accessToken }) => {
           </div>
         </div>
       ) : (
-        <TailSpin
-          height='80'
-          width='80'
-          color='#1DB954'
-          ariaLabel='tail-spin-loading'
-          radius='1'
-          wrapperStyle={{}}
-          wrapperClass=''
-          visible={true}
-        />
+        <div
+          className='container d-flex justify-content-center align-items-center'
+          style={{ height: '65vh' }}
+        >
+          <TailSpin
+            height='60'
+            width='60'
+            color='#1DB954'
+            ariaLabel='tail-spin-loading'
+            radius='1'
+            wrapperStyle={{}}
+            wrapperClass=''
+            visible={true}
+          />
+        </div>
       )}
     </div>
   );

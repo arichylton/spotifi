@@ -98,7 +98,7 @@ const UserTopArtists = ({ accessToken, chooseArtist }) => {
                 </Link>
 
                 <div className='m-3 mb-4'>
-                  <div className='text-white fs-5'>{artist.name}</div>
+                  <div className='text-white'>{artist.name}</div>
                 </div>
               </div>
             );

@@ -20,15 +20,15 @@ const Playlists = ({ accessToken }) => {
   }, [accessToken]);
 
   return (
-    <div className='text-white container mt-4 mb-5'>
-      <h1 className='mb-5 fw-bold'>Playlists</h1>
+    <div className='text-white container mt-4 mb-5 text-center'>
+      <h1 className='mb-5 mt-2 pb-1 fw-bold'>Playlists</h1>
 
-      <div className='row justify-content-md-center'>
+      <div className='row'>
         {playlists ? (
           playlists.items.map((playlist, i) => {
             return (
               <div
-                className='d-flex m-3 align-items-center flex-column col playlist-item'
+                className='d-flex m-3 align-items-center flex-column col playlist__item'
                 style={{ cursor: 'pointer' }}
                 key={playlist.uri}
               >
@@ -41,8 +41,8 @@ const Playlists = ({ accessToken }) => {
                           : { musicSVG }
                       }
                       style={{
-                        height: '220px',
-                        width: '220px',
+                        height: '240px',
+                        width: '240px',
                         objectFit: 'cover',
                       }}
                       className='rounded playlist__img'
@@ -53,11 +53,11 @@ const Playlists = ({ accessToken }) => {
                       src={musicSVG}
                       alt='svg'
                       style={{
-                        height: '220px',
-                        width: '220px',
+                        height: '240px',
+                        width: '240px',
                         objectFit: 'cover',
                       }}
-                      className='playlist__img rounded'
+                      className='playlist__img rounded playlist__img-icon'
                     />
                   )}
                 </Link>

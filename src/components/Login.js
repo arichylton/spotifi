@@ -1,4 +1,5 @@
 import { Container } from 'react-bootstrap';
+import '../styles/login.css'
 
 const CLIENT_ID = '90a462053588436b95c0d6ad460a9878';
 const RESPONSE_TYPE = 'code';
@@ -11,10 +12,10 @@ const AUTH_URL = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&
 const Login = () => {
   return (
     <Container
-      className='d-flex justify-content-center align-items-center'
+      className='d-flex justify-content-center align-items-center '
       style={{ minHeight: '100vh' }}
     >
-      <a className='btn btn-success btn-lg' href={AUTH_URL}>
+      <a className='btn btn-success btn-lg login__button fw-bold' href={AUTH_URL}>
         Login With Spotify
       </a>
     </Container>

@@ -23,8 +23,16 @@ a {
   text-decoration: none;
 }
 
+nav a:hover {
+  text-decoration: underline;
+  padding-bottom: 5px;
+}
+
+nav .shift-item .active {
+  background-color: black;
+}
+
 a:active {
-  text-decoration: none;
   transform: translateY(1px) translateX(1px);
 }
 

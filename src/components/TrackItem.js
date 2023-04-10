@@ -1,12 +1,6 @@
+import { formatDuration } from "../utils";
+
 const TrackItem = ({ track, handlePlay, size, width }) => {
-  function formatTime(milliseconds) {
-    let totalSeconds = Math.floor(milliseconds / 1000);
-    let minutes = Math.floor(totalSeconds / 60);
-    let seconds = totalSeconds % 60;
-    return `${minutes.toString().padStart(1, '0')}:${seconds
-      .toString()
-      .padStart(2, '0')}`;
-  }
 
   return (
     <div
@@ -22,7 +16,7 @@ const TrackItem = ({ track, handlePlay, size, width }) => {
         />
         <div className='m-3'>
           <div
-            className='text-white fw-bold d-block text-truncate'
+            className='text-white d-block text-truncate'
             style={{ maxWidth: `${width}` }}
           >
             {track.name}
@@ -36,7 +30,7 @@ const TrackItem = ({ track, handlePlay, size, width }) => {
         </div>
       </div>
 
-      <div className='text-muted m-3 '>{formatTime(track.duration_ms)}</div>
+      <div className='text-muted m-3 '>{formatDuration(track.duration_ms)}</div>
     </div>
   );
 };

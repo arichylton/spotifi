@@ -15,8 +15,6 @@ const Dashboard = ({ accessToken, spotifyApi, chooseTrack }) => {
     setSearch('');
   };
 
-
-
   useEffect(() => {
     if (!search) return setSearchResults([]);
     if (!accessToken) return;
