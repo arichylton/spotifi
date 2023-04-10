@@ -36,8 +36,7 @@ const UserTopArtists = ({ accessToken, chooseArtist }) => {
 
   return (
     <div className='container'>
-      <hr />
-      <div className='text-white d-flex justify-content-between mb-4 mt-3'>
+      <div className='text-white d-flex justify-content-between mb-4 mt-4'>
         <h1 className='mb-4 fw-bold'>Top Artists</h1>
         <ul
           className='d-flex text-decoration-none justify-content-around list-group-horizontal align-items-center fs-6'
@@ -93,7 +92,7 @@ const UserTopArtists = ({ accessToken, chooseArtist }) => {
                       width: '220px',
                       objectFit: 'cover',
                     }}
-                    className='rounded-circle'
+                    className='rounded-circle  artist__img'
                     alt='top-track-img'
                   />
                 </Link>

@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import SpotifyWebApi from 'spotify-web-api-node';
-import axios from 'axios';
 
-import { getUser } from '../spotify';
-import { catchErrors } from '../utils';
 import Navbar from './Navbar';
 import User from './User';
 import Player from './Player';
 import Dashboard from './Dashboard';
 import UserTopArtists from './UserTopArtists';
 import UserTopTracks from './UserTopTracks';
+import Playlists from './Playlists';
 import useAuth from '../useAuth';
 import Artist from './Artist';
+import Playlist from './Playlist';
 
 const CLIENT_ID = '90a462053588436b95c0d6ad460a9878';
 const spotifyApi = new SpotifyWebApi({
@@ -58,7 +57,7 @@ const Profile = ({ code }) => {
   return (
     <div>
       <div>
-        <Navbar  />
+        <Navbar />
       </div>
       <Routes>
         <Route
@@ -71,10 +70,19 @@ const Profile = ({ code }) => {
             />
           }
         >
-          <Route path='/' element={<User accessToken={accessToken} chooseTrack={chooseTrack}/>} />
+          <Route
+            path='/'
+            element={
+              <User accessToken={accessToken} chooseTrack={chooseTrack} />
+            }
+          />
           <Route
             path='artists'
             element={<UserTopArtists accessToken={accessToken} />}
+          />
+          <Route
+            path='playlists'
+            element={<Playlists accessToken={accessToken} />}
           />
           <Route
             path='tracks'
@@ -88,6 +96,10 @@ const Profile = ({ code }) => {
           <Route
             path={`artist/:id`}
             element={<Artist accessToken={accessToken} />}
+          />
+          <Route
+            path={`playlist/:id`}
+            element={<Playlist accessToken={accessToken} />}
           />
         </Route>
       </Routes>

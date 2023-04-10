@@ -6,6 +6,7 @@ import { Carousel } from 'react-responsive-carousel';
 import TrackItem from './TrackItem';
 import { useNavigate } from 'react-router-dom';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import '../styles/user.css'
 
 const User = ({ accessToken, chooseTrack }) => {
   const [user, setUser] = useState(null);
@@ -47,7 +48,7 @@ const User = ({ accessToken, chooseTrack }) => {
               <img
                 src={user.images[0].url}
                 alt='Artist'
-                className='rounded'
+                className='rounded user__img'
                 style={{
                   width: 260,
                   height: 260,
@@ -76,7 +77,10 @@ const User = ({ accessToken, chooseTrack }) => {
                 </span>
               </div>
             </div>
-            <div className='align-self-center mb-4' style={{ width: '35%' }}>
+            <div
+              className='align-self-center mb-5 user__img'
+              style={{ width: '35%' }}
+            >
               {playlists ? (
                 <Carousel
                   showArrows={true}
@@ -94,11 +98,7 @@ const User = ({ accessToken, chooseTrack }) => {
                     })
                     .map((playlist, i) => {
                       return (
-                        <div
-                          key={i}
-                          style={{ cursor: 'pointer' }}
-                          
-                        >
+                        <div key={i} style={{ cursor: 'pointer' }}>
                           <img
                             className='rounded'
                             src={

@@ -41,8 +41,8 @@ const UserTopTracks = ({ accessToken, chooseTrack }) => {
 
   return (
     <div className='container' style={{marginBottom: '5rem'}}>
-      <hr />
-      <div className='text-white d-flex justify-content-between mb-4 mt-3'>
+
+      <div className='text-white d-flex justify-content-between mb-4 mt-4'>
         <h1 className='mb-4 fw-bold'>Top Songs</h1>
         <ul
           className='d-flex text-decoration-none justify-content-around list-group-horizontal align-items-center fs-6'

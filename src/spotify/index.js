@@ -118,6 +118,14 @@ export const getPlaylists = (token) =>
     },
   });
 
+  export const getPlaylist = (token, id) =>
+    axios.get(`https://api.spotify.com/v1/playlists/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
 export const getUserInfo = (token) =>
   axios
     .all([
