@@ -21,25 +21,10 @@ const spotifyApi = new SpotifyWebApi({
 
 const Profile = ({ code }) => {
   const [playingTrack, setPlayingTrack] = useState('');
-  const [lyrics, setLyrics] = useState('');
   const accessToken = useAuth(code);
   const chooseTrack = (track) => {
     setPlayingTrack(track);
   };
-
-  // useEffect(() => {
-  //   if (!playingTrack) return;
-  //   axios
-  //     .get('http://localhost:3001/lyrics', {
-  //       params: {
-  //         track: playingTrack.title,
-  //         artist: playingTrack.artist,
-  //       },
-  //     })
-  //     .then((res) => {
-  //       setLyrics(res.data.lyrics);
-  //     });
-  // }, [playingTrack]);
 
   useEffect(() => {
     if (!accessToken) return;
@@ -48,9 +33,7 @@ const Profile = ({ code }) => {
 
   return (
     <div>
-      <div>
-        <Navbar />
-      </div>
+      <Navbar />
       <Routes>
         <Route
           path='/'

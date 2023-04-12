@@ -3,6 +3,12 @@
   color: white;
 }
 
+.artist__responsive-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: start;
+}
+
 .artist-item:active {
   scale: 1.0;
 }
@@ -19,3 +25,11 @@
 .artist__img {
   box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 10px;
 }
+
+ @media (max-width: 1250px) { 
+  .artist__responsive-container {
+    flex-direction: column;
+    align-items: center;
+    
+  }
+ }

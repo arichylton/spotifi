@@ -38,10 +38,9 @@ const User = ({ accessToken, chooseTrack }) => {
     <div className='text-white mt-5 container'>
       {user ? (
         <div className='d-flex flex-column'>
-          <div className='d-flex mt-3 mb-1 justify-content-around'>
+          <div className='user__responsive-container mt-3 mb-1'>
             <div
-              className='d-flex flex-column ms-3 gap-4'
-              style={{ height: '30vh' }}
+              className='d-flex flex-column gap-4'
             >
               <img
                 src={user.images[0].url}
@@ -53,8 +52,8 @@ const User = ({ accessToken, chooseTrack }) => {
                   objectFit: 'cover',
                 }}
               />
-              <div className='d-flex flex-column gap-1 fw-bold'>
-                <h1 className='fs-1 mb-2 text-center '>{user.display_name}</h1>
+              <div className='d-flex flex-column gap-1 fw-bold '>
+                <h1 className='fs-1 mb-3 text-center '>{user.display_name}</h1>
                 <span className='text-muted fs-5 d-flex justify-content-between align-items-center user__stats'>
                   Playlists:{' '}
                   <span style={{ color: '#1DB954' }}>{playlists.total}</span>
@@ -73,10 +72,7 @@ const User = ({ accessToken, chooseTrack }) => {
                 </span>
               </div>
             </div>
-            <div
-              className='align-self-center mb-5 user__img'
-              style={{ width: '35%' }}
-            >
+            <div className='align-self-center mb-5 user__img user__responsive-carousel'>
               {playlists ? (
                 <Carousel
                   showArrows={true}
@@ -121,7 +117,7 @@ const User = ({ accessToken, chooseTrack }) => {
               )}
             </div>
           </div>
-          <div className='d-flex gap-5 justify-content-center mt-5'>
+          <div className=' gap-5 mt-5 user__responsive-songs'>
             <div className='container'>
               <h2 className='mb-4 fw-bold'>Liked Songs</h2>
               {savedTracks.items.map((data, i) => {

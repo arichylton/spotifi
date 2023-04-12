@@ -46,7 +46,7 @@ const Artist = ({ accessToken, chooseTrack }) => {
           className='d-flex flex-column justify-content-around'
           style={{ marginBottom: '70px' }}
         >
-          <div className='d-flex justify-content-around align-items-start mt-5 gap-4'>
+          <div className='mt-5 gap-4 artist__responsive-container'>
             <div className='d-flex flex-column align-items-center mt-3 flex-fill'>
               <img
                 src={artist.images[0].url}

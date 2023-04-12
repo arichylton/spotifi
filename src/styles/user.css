@@ -5,3 +5,34 @@
 .user__stats {
   font-family: 'Montserrat', sans-serif;
 }
+
+.user__responsive-carousel {
+    width: 35%;
+  }
+
+.user__responsive-songs {
+  display: flex;
+  justify-content: center;
+}
+
+.user__responsive-container {
+  display:flex;
+  justify-content: space-around;
+}
+
+ @media (max-width: 1250px) { 
+  .user__responsive-songs{
+    flex-direction: column;
+  }
+ }
+
+  @media (max-width: 600px) { 
+  .user__responsive-container {
+  flex-direction: column;
+  align-items: center;
+  flex: fill;
+  }
+  .user__responsive-carousel {
+    display: none;
+  }
+ }

@@ -23,6 +23,7 @@ const Album = ({ accessToken, chooseTrack }) => {
     };
     catchErrors(fetchData());
   }, []);
+  
   console.log(album);
   return (
     <div className='text-white container mt-2'>
