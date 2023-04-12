@@ -33,6 +33,7 @@ const User = ({ accessToken, chooseTrack }) => {
     };
     catchErrors(fetchData());
   }, [accessToken]);
+
   return (
     <div className='text-white mt-5 container'>
       {user ? (
@@ -129,13 +130,13 @@ const User = ({ accessToken, chooseTrack }) => {
                     track={data.track}
                     handlePlay={handlePlay}
                     key={i}
-                    size={'55'}
+                    size={'60'}
                     width={'40rem'}
                   />
                 );
               })}
             </div>
-            <div className='container'>
+            <div className='container ' style={{ marginBottom: '90px' }}>
               <h2 className='mb-4 fw-bold'>Recently Played</h2>
               {recentlyPlayed.items.map((data, i) => {
                 return (
@@ -143,7 +144,7 @@ const User = ({ accessToken, chooseTrack }) => {
                     track={data.track}
                     handlePlay={handlePlay}
                     key={i}
-                    size={'55'}
+                    size={'60'}
                     width={'40rem'}
                   />
                 );

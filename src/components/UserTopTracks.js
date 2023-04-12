@@ -46,7 +46,6 @@ const UserTopTracks = ({ accessToken, chooseTrack }) => {
         <h1 className='mb-4 fw-bold'>Top Songs</h1>
         <ul
           className='d-flex text-decoration-none justify-content-around list-group-horizontal align-items-center fs-6'
-          style={{ width: '30%' }}
         >
           <li className='list-item'>
             <button
@@ -89,7 +88,7 @@ const UserTopTracks = ({ accessToken, chooseTrack }) => {
               handlePlay={handlePlay}
               key={i}
               size={'64'}
-              width={'50rem'}
+              width={'100%'}
             />
           );
         })

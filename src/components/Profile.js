@@ -12,6 +12,7 @@ import Playlists from './Playlists';
 import useAuth from '../useAuth';
 import Artist from './Artist';
 import Playlist from './Playlist';
+import Album from './Album';
 
 const CLIENT_ID = '90a462053588436b95c0d6ad460a9878';
 const spotifyApi = new SpotifyWebApi({
@@ -86,12 +87,20 @@ const Profile = ({ code }) => {
           />
           <Route
             path={`artist/:id`}
-            element={<Artist accessToken={accessToken} />}
+            element={
+              <Artist accessToken={accessToken} chooseTrack={chooseTrack} />
+            }
           />
           <Route
             path={`playlist/:id`}
             element={
               <Playlist accessToken={accessToken} chooseTrack={chooseTrack} />
+            }
+          />
+          <Route
+            path={`album/:id`}
+            element={
+              <Album accessToken={accessToken} chooseTrack={chooseTrack} />
             }
           />
         </Route>

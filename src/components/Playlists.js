@@ -57,13 +57,13 @@ const Playlists = ({ accessToken }) => {
                         width: '240px',
                         objectFit: 'cover',
                       }}
-                      className='playlist__img rounded playlist__img-icon'
+                      className='playlist__img rounded playlist__img-icon '
                     />
                   )}
                 </Link>
 
                 <div className='m-3 mb-4'>
-                  <div className='text-white fs-6'>
+                  <div className='text-white fs-6 playlist__item-stat'>
                     {playlist.name !== '  ' ? playlist.name : 'Untitled'}
                   </div>
                 </div>

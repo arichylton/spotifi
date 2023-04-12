@@ -6,7 +6,7 @@ import '../styles/navbar.css';
 const Navbar = () => {
   return (
     <Fragment>
-      <nav className='navigation container mb-5 pt-5 '>
+      <nav className='navigation container mb-5 pt-5'>
         <Link to='/'>
           <div className='logo-container'>
             <img src={spotifyLogo} alt='userIMG' style={{ width: 140 }} />

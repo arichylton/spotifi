@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getPlaylist } from '../spotify';
+import { getAlbum } from '../spotify';
 import { TailSpin } from 'react-loader-spinner';
 import { catchErrors } from '../utils';
 import TrackItem from './TrackItem';
-import '../styles/playlist.css';
-
+import '../styles/album.css';
 import musicSvg from '../assets/music.svg';
 
-const Playlist = ({ accessToken, chooseTrack }) => {
-  const [playlist, setPlaylist] = useState(null);
+const Album = ({ accessToken, chooseTrack }) => {
+  const [album, setAlbum] = useState(null);
   const { id } = useParams();
 
   const handlePlay = (track) => {
@@ -18,28 +17,28 @@ const Playlist = ({ accessToken, chooseTrack }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await getPlaylist(accessToken, id).then((playlist) => {
-        setPlaylist(playlist.data);
+      await getAlbum(accessToken, id).then((album) => {
+        setAlbum(album.data);
       });
     };
     catchErrors(fetchData());
   }, []);
-  
+  console.log(album);
   return (
     <div className='text-white container mt-2'>
-      {playlist ? (
+      {album ? (
         <div className='d-flex flex-column mt-5'>
           <div className='d-flex flex-column align-items-center mb-5 fs-5'>
             <div>
-              {playlist.images.length > 0 ? (
+              {album.images.length > 0 ? (
                 <img
-                  src={playlist.images[0].url}
+                  src={album.images[0]?.url}
                   style={{
                     height: '300px',
                     width: '300px',
                     objectFit: 'cover',
                   }}
-                  className='rounded playlist__img'
+                  className='rounded album__img'
                   alt='top-track-img'
                 />
               ) : (
@@ -51,38 +50,40 @@ const Playlist = ({ accessToken, chooseTrack }) => {
                     width: '300px',
                     objectFit: 'cover',
                   }}
-                  className='playlist__img rounded playlist__img-icon'
+                  className='album__img rounded album__img-icon'
                 />
               )}
             </div>
 
             <span className='mt-3 mb-2 fs-2'>
-              {playlist.owner.display_name}
+              {album.name}
             </span>
             <span
               className='d-flex gap-5
-              justify-content-between text-muted playlist__item-stat fw-bold'
+              justify-content-between text-muted album__item-stat fw-bold'
             >
-              Followers:
+              Total Tracks:
               <span style={{ color: '#1DB954' }}>
-                {playlist.followers.total}
+                {album.total_tracks}
               </span>
             </span>
           </div>
 
           <div className='mt-2' style={{ marginBottom: '80px' }}>
             <span className='fw-bold' style={{ fontSize: 30 }}>
-              {playlist.name !== '  ' ? playlist.name : 'Untitled'}
+              {album.name !== '  ' ? album.name : 'Untitled'}
             </span>
             <div className='mt-4'>
-              {playlist.tracks.items.map((track, i) => {
+              {album.tracks.items.map((track, i) => {
+                console.log(track);
                 return (
                   <TrackItem
-                    track={track.track}
+                    track={track}
                     handlePlay={handlePlay}
                     key={i}
                     size={'64'}
                     width={'50rem'}
+                    url={album.images[0].url}
                   />
                 );
               })}
@@ -109,4 +110,4 @@ const Playlist = ({ accessToken, chooseTrack }) => {
     </div>
   );
 };
-export default Playlist;
+export default Album;

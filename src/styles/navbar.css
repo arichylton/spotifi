@@ -33,7 +33,7 @@ nav .shift-item .active {
 }
 
 a:active {
-  transform: translateY(1px) translateX(1px);
+  scale: 1.0;
 }
 
 

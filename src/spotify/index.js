@@ -17,13 +17,13 @@ export const getSavedTracks = (token) =>
     },
   });
 
-  export const getRecentlyPlayed = (token) =>
-    axios.get('https://api.spotify.com/v1/me/player/recently-played', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
+export const getRecentlyPlayed = (token) =>
+  axios.get('https://api.spotify.com/v1/me/player/recently-played', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
 
 // TOP TRACKS //////////////////////////////////////////////////////////////////
 export const getTopTracksLong = (token) =>
@@ -94,13 +94,45 @@ export const getTopArtistsShort = (token) =>
   );
 
 // SINGLE ARTIST ////////////////////////////////////////////////////////////////
-export const getArtist = (id, token) =>
+export const getArtist = (token, id) =>
   axios.get(`https://api.spotify.com/v1/artists/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
   });
+
+export const getArtistTopTracks = (token, id) =>
+  axios.get(
+    `https://api.spotify.com/v1/artists/${id}/top-tracks?market=US`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+export const getArtistAlbums = (token, id) =>
+  axios.get(`https://api.spotify.com/v1/artists/${id}/albums?market=US&include_groups=album&limit=30`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+export const getAlbum = (token, id) =>
+    axios.get(
+      `https://api.spotify.com/v1/albums/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+  );
+
+/////////////////////////////////////////////////////////////////
 
 export const getFollowing = (token) =>
   axios.get('https://api.spotify.com/v1/me/following?type=artist', {
@@ -118,13 +150,13 @@ export const getPlaylists = (token) =>
     },
   });
 
-  export const getPlaylist = (token, id) =>
-    axios.get(`https://api.spotify.com/v1/playlists/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
+export const getPlaylist = (token, id) =>
+  axios.get(`https://api.spotify.com/v1/playlists/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
 
 export const getUserInfo = (token) =>
   axios
@@ -159,6 +191,21 @@ export const getAllTrackData = (token) =>
         long: long.data,
         medium: medium.data,
         short: short.data,
+      }))
+    );
+
+export const getArtistData = (token, id) =>
+  axios
+    .all([
+      getArtist(token, id),
+      getArtistTopTracks(token, id),
+      getArtistAlbums(token, id),
+    ])
+    .then(
+      axios.spread((artist, tracks, albums) => ({
+        artist: artist.data,
+        tracks: tracks.data,
+        albums: albums.data,
       }))
     );
 

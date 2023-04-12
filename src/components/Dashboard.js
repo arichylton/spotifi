@@ -51,7 +51,7 @@ const Dashboard = ({ accessToken, spotifyApi, chooseTrack }) => {
     <Container className='d-flex flex-column py-2'>
       <Form.Control
         type='search'
-        placeholder='Search Songs/Artists'
+        placeholder='Search Songs'
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />

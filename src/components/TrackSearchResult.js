@@ -1,16 +1,10 @@
+import { formatDuration } from "../utils";
+
 const TrackSearchResult = ({ track, chooseTrack, clear }) => {
   const handlePlay = () => {
     chooseTrack(track);
     clear();
   };
-  function formatTime(milliseconds) {
-    let totalSeconds = Math.floor(milliseconds / 1000);
-    let minutes = Math.floor(totalSeconds / 60);
-    let seconds = totalSeconds % 60;
-    return `${minutes.toString().padStart(1, '0')}:${seconds
-      .toString()
-      .padStart(2, '0')}`;
-  }
   return (
     <div
       className='d-flex align-items-center justify-content-between track-item '
@@ -32,7 +26,7 @@ const TrackSearchResult = ({ track, chooseTrack, clear }) => {
         </div>
       </div>
 
-      <div className='text-muted m-3 '>{formatTime(track.duration)}</div>
+      <div className='text-muted m-3 '>{formatDuration(track.duration)}</div>
     </div>
   );
 };

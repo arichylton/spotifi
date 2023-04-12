@@ -1,58 +1,124 @@
 import { useEffect, useState } from 'react';
-import { getArtist } from '../spotify';
+import { getArtistData } from '../spotify';
 import { useParams } from 'react-router-dom';
 import { catchErrors } from '../utils/index';
+import { Link } from 'react-router-dom';
 import { TailSpin } from 'react-loader-spinner';
+import TrackItem from './TrackItem';
 import '../styles/artist.css';
 
-const Artist = ({ accessToken }) => {
+const Artist = ({ accessToken, chooseTrack }) => {
   const [artist, setArtist] = useState(null);
+  const [tracks, setTracks] = useState(null);
+  const [albums, setAlbums] = useState(null);
+  const [filteredAlbums, setFilteredAlbums] = useState(null);
   const { id } = useParams();
+
+  const handlePlay = (track) => {
+    chooseTrack(track);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
-      await getArtist(id, accessToken).then((artist) => {
-        setArtist(artist.data);
-      });
+      const { artist, tracks, albums } = await getArtistData(accessToken, id);
+      setArtist(artist);
+      setTracks(tracks.tracks);
+      setAlbums(albums.items);
     };
+
     catchErrors(fetchData());
   }, []);
 
+  useEffect(() => {
+    if (!albums) return;
+
+    let filtered = albums.filter(
+      (album, index, self) =>
+        index === self.findIndex((a) => a.name === album.name)
+    );
+    setFilteredAlbums(filtered);
+  }, [albums]);
+
   return (
-    <div className='text-white artist__page'>
+    <div className='text-white'>
       {artist ? (
-        <div className='d-flex flex-column align-items-center justify-content-center mt-3 w-100'>
-          <div className='d-flex flex-column align-items-center'>
-            <img
-              src={artist.images[0].url}
-              alt='Artist'
-              className='rounded-circle'
-              style={{ width: 300, height: 300, objectFit: 'cover' }}
-            />
-            <span className='mt-4' style={{ fontSize: 80 }}>
-              {artist.name}
-            </span>
+        <div
+          className='d-flex flex-column justify-content-around'
+          style={{ marginBottom: '70px' }}
+        >
+          <div className='d-flex justify-content-around align-items-start mt-5 gap-4'>
+            <div className='d-flex flex-column align-items-center mt-3 flex-fill'>
+              <img
+                src={artist.images[0].url}
+                alt='Artist'
+                className='rounded mb-3 artist__img'
+                style={{ width: 300, height: 300, objectFit: 'cover' }}
+              />
+              <h1 className='mb-3 fw-bold'>{artist.name}</h1>
+              <div className='d-flex flex-column fs-5 gap-2 artist__item-stat'>
+                <div className='d-flex flex-column align-items-center text-danger fs-5 fw-bold'>
+                  {artist.followers.total.toLocaleString('en-US')}
+                  <span className='fs-6 text-secondary '>Followers</span>
+                </div>
+                <div className='d-flex align-items-center flex-column'>
+                  <ul className='d-flex flex-column align-items-center mb-1 p-0 text-center'>
+                    {artist.genres.map((genre, i) => {
+                      return (
+                        <li key={i} className='text-danger fw-bold'>
+                          {genre}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  <span className='fs-6 text-secondary fw-bold'>Genres</span>
+                </div>
+                <div className='flex-column d-flex align-items-center text-danger fw-bold'>
+                  {artist.popularity}
+                  <span className='fs-6 text-secondary'>Popularity</span>
+                </div>
+              </div>
+            </div>
+
+            <div className='flex-fill'>
+              <h3 className='mb-3'>Top Tracks</h3>
+              {tracks.map((track, i) => {
+                return (
+                  <TrackItem
+                    track={track}
+                    handlePlay={handlePlay}
+                    key={i}
+                    size={'64'}
+                    width={'100%'}
+                  />
+                );
+              })}
+            </div>
           </div>
-          <div className='d-flex align-items-center justify-content-between mt-4 fs-3 gap-5 w-50'>
-            <div className='flex-column d-flex align-items-center text-danger fs-4 fw-bold w-100'>
-              {artist.followers.total.toLocaleString('en-US')}
-              <span className='fs-6 text-secondary'>Followers</span>
-            </div>
-            <div className='d-flex align-items-center flex-column w-100'>
-              <ul className='d-flex flex-column align-items-center mb-1 p-0 text-center'>
-                {artist.genres.map((genre, i) => {
-                  return (
-                    <li key={i} className='text-danger fw-bold fs-4'>
-                      {genre}
-                    </li>
-                  );
-                })}
-              </ul>
-              <span className='fs-6 text-secondary fw-bold'>Genres</span>
-            </div>
-            <div className='flex-column d-flex align-items-center text-danger  fs-4 fw-bold w-100'>
-              {artist.popularity}
-              <span className='fs-6 text-secondary'>Popularity</span>
+
+          <div className='mt-5 d-flex flex-column align-items-center mb-5 '>
+            <h3 className='mb-4 mt-5'>Discography</h3>
+            <div className='d-flex container row'>
+              {filteredAlbums
+                ? filteredAlbums.map((album, i) => {
+                    return (
+                      <Link
+                        key={i}
+                        className='d-flex flex-column align-items-center text-center p-3 artist-item cursor col'
+                        to={`/album/${album.id}`}
+                      >
+                        <img
+                          src={album.images[0].url}
+                          alt='album'
+                          className='rounded artist__img'
+                          style={{ height: `${200}px`, width: `${200}px` }}
+                        />
+                        <span className='mt-2 artist__item-stat'>
+                          {album.name}
+                        </span>
+                      </Link>
+                    );
+                  })
+                : ''}
             </div>
           </div>
         </div>

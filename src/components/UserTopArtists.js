@@ -40,7 +40,6 @@ const UserTopArtists = ({ accessToken, chooseArtist }) => {
         <h1 className='mb-4 fw-bold'>Top Artists</h1>
         <ul
           className='d-flex text-decoration-none justify-content-around list-group-horizontal align-items-center fs-6'
-          style={{ width: '30%' }}
         >
           <li className='list-item'>
             <button
@@ -98,7 +97,9 @@ const UserTopArtists = ({ accessToken, chooseArtist }) => {
                 </Link>
 
                 <div className='m-3 mb-4'>
-                  <div className='text-white'>{artist.name}</div>
+                  <div className='text-white playlist__item-stat'>
+                    {artist.name}
+                  </div>
                 </div>
               </div>
             );
